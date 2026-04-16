@@ -291,6 +291,13 @@ const modals: Record<(typeof Modals)[keyof typeof Modals], ModalDefinition> = {
       })),
     ),
   },
+  [Modals.AdjustSlippage]: {
+    component: lazy(() =>
+      import("./AdjustSlippage").then(({ AdjustSlippage }) => ({
+        default: AdjustSlippage,
+      })),
+    ),
+  },
 };
 
 type ModalDefinition = {

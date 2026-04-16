@@ -26,6 +26,7 @@ import {
   FormattedNumber,
   IconButton,
   IconChevronDownFill,
+  IconEdit,
   IconUser,
   Input,
   InputSizeWithMax,
@@ -345,6 +346,7 @@ const PerpsTradeMenu: React.FC<TradeMenuProps> = ({ controllers }) => {
   });
 
   const [sizeCoinDenom, setSizeCoinDenom] = useState("usd");
+  const [maxSlippage, setMaxSlippage] = useState(Number(PERPS_DEFAULT_SLIPPAGE));
 
   useEffect(() => {
     setSizeCoinDenom("usd");
@@ -499,7 +501,7 @@ const PerpsTradeMenu: React.FC<TradeMenuProps> = ({ controllers }) => {
     operation,
     sizeValue,
     priceValue,
-    maxSlippage: PERPS_DEFAULT_SLIPPAGE,
+    maxSlippage: maxSlippage.toString(),
     tpPrice: tpslEnabled && Number(tpPrice) > 0 ? tpPrice : undefined,
     slPrice: tpslEnabled && Number(slPrice) > 0 ? slPrice : undefined,
     reduceOnly,
@@ -773,7 +775,27 @@ const PerpsTradeMenu: React.FC<TradeMenuProps> = ({ controllers }) => {
             />
           ) : null}
           {operation === "market" ? (
-            <InfoRow label={m["dex.protrade.perps.slippage"]()} value={m["dex.protrade.perps.slippageDefault"]()} />
+            <div className="flex items-center justify-between gap-2">
+              <Tooltip title={m["dex.protrade.perps.slippageTooltip"]()}>
+                <p className="diatype-xs-regular text-ink-tertiary-500 cursor-help underline decoration-dashed underline-offset-[4px] decoration-current">
+                  {m["dex.protrade.perps.slippage"]()}
+                </p>
+              </Tooltip>
+              <div className="flex items-center gap-1">
+                <p className="diatype-xs-medium text-ink-secondary-700">
+                  {m["dex.protrade.perps.slippageDisplay"]({ max: (maxSlippage * 100).toFixed(2) })}
+                </p>
+                <IconEdit
+                  className="w-4 h-4 text-ink-tertiary-500 hover:text-ink-secondary-700 cursor-pointer"
+                  onClick={() =>
+                    showModal(Modals.AdjustSlippage, {
+                      currentSlippage: maxSlippage,
+                      onConfirm: setMaxSlippage,
+                    })
+                  }
+                />
+              </div>
+            </div>
           ) : null}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-1">
