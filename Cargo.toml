@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "dango/account",
+  "exploit-crate",
   "dango/account-factory",
   "dango/auth",
   "dango/bank",
